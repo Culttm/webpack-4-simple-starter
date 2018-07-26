@@ -4,14 +4,17 @@ const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
+const env = process.env.NODE_ENV || "development";
 
 module.exports = {
     entry: {
-        main: './src/js/index.js'
+        main: './src/js/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].[chunkhash].js',
+        filename: 'production' === env ? '[name].[chunkhash].js' : '[name].js',
         publicPath: "/"
     },
     module: {
@@ -49,15 +52,16 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin('dist', {}),
-        new ExtractTextPlugin({filename: 'style.[chunkhash].css', disable: false, allChunks: true}),
+        new ExtractTextPlugin({filename: 'production' === env ? 'style.[chunkhash].css' : 'style.css', disable: false, allChunks: true}),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            inject: false,
+            inject: true,
             hash: true,
             template: './src/index.html',
             filename: 'index.html'
         }),
-        new WebpackMd5Hash()
+        new WebpackMd5Hash(),
+        new ManifestPlugin()
     ],
     resolve: {
         alias: {
@@ -65,5 +69,16 @@ module.exports = {
             '@': path.resolve(__dirname, 'src/js/app'),
         },
         extensions: ['*', '.js', '.vue', '.json']
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
     }
 }

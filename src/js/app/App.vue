@@ -1,33 +1,22 @@
 <template>
     <div>
-        <AsyncComponent v-if="show" />
-        <div class="bg"></div>
-        <pre> {{ users }} </pre>
+        <SuperComponent />
+        <button @click="changeLocale('ru')">RU</button>
+        <button @click="changeLocale('uk')">UK</button>
+        <button @click="changeLocale('en')">EN</button>
     </div>
 </template>
 
 <script>
+    import { asyncLoadByCountry, loadLanguageAsync } from '@/helpers'
+
     export default {
         components: {
-            AsyncComponent: () => import('@/components/asyncComponent')
-        },
-        data(){
-            return {
-                users: [],
-                show: false
-            }
-        },
-        mounted(){
-            this.fetch()
-
-            setTimeout(() => {
-                this.show = true
-            }, 4000)
+            SuperComponent: asyncLoadByCountry('SuperComponent', true)
         },
         methods: {
-            async fetch(){
-                const data = await fetch('http://jsonplaceholder.typicode.com/users');
-                this.users = await data.json()
+            async changeLocale(locale) {
+                await loadLanguageAsync(locale, this.$i18n);
             }
         }
     }

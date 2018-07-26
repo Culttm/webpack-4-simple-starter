@@ -6,10 +6,19 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.chunks.main.css %>">
+    <script>
+        window.__INIT__ = {
+            'locale': 'ru',
+            'country': 'en',
+            'translations': {
+                // "message": "На русском",
+                "message": "English message",
+                // "message": "Українською",
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="app"></div>
-<script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
 </body>
 </html>
