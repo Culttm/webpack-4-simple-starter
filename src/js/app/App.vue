@@ -1,6 +1,7 @@
 <template>
     <div>
         <AsyncComponent v-if="show" />
+        <div class="bg"></div>
         <pre> {{ users }} </pre>
     </div>
 </template>
@@ -8,7 +9,7 @@
 <script>
     export default {
         components: {
-            AsyncComponent: () => import('@/components/asyncComponent.vue')
+            AsyncComponent: () => import('@/components/asyncComponent')
         },
         data(){
             return {
