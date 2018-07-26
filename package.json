@@ -27,8 +27,7 @@
     "webpack-md5-hash": "^0.0.6"
   },
   "scripts": {
-    "start": "webpack",
-    "dev": "webpack-dev-server --mode development --open --watch",
+    "start": "webpack-dev-server --mode development --open --watch",
     "build": "webpack --mode production"
   }
 }
